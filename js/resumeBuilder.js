@@ -5,17 +5,7 @@ var bio = {
         "mobile": "303-513-5592",
         "email": "nidhi_varma@hotmail.com",
         "github": "nidhi-varma",
-        "location": "Denver, CO",
-        "display": function() {
-            var formattedEmail = HTMLemail.replace("%data%", this.email);
-            $("#topContacts").append(formattedEmail);
-            var formattedMobile = HTMLmobile.replace("%data%", this.mobile);
-            $("#topContacts").append(formattedMobile);
-            var formattedGithub = HTMLgithub.replace("%data%", this.github);
-            $("#topContacts").append(formattedGithub);
-            var formattedLocation = HTMLlocation.replace("%data%", this.location);
-            $("#topContacts").append(formattedLocation);
-        }
+        "location": "Denver, CO"
     },
     "welcomeMessage": "Welcome to my Web Page",
     "skills": [
@@ -33,7 +23,6 @@ var bio = {
         var formattedName = HTMLheaderName.replace("%data%", this.name);
         $("#topHeader").prepend(formattedName);
 
-        this.contacts.display();
         var formattedPic = HTMLbioPic.replace("%data%", this.biopic);
         $("#header").append(formattedPic);
         var formattedWM = HTMLWelcomeMsg.replace("%data%", this.welcomeMessage);
@@ -41,11 +30,25 @@ var bio = {
         if (this.skills.length > 0) {
             $("#header").append(HTMLskillsStart);
         }
-        for (var skill in this.skills) {
-            var formattedSkills = HTMLskills.replace("%data%", this.skills[skill]);
+
+        for (var i = 0; i <  this.skills.length; i++) {
+            var formattedSkills = HTMLskills.replace("%data%", this.skills[i]);
             $("#skills").append(formattedSkills);
         }
-        $("#main").append(internationalizeButton);
+
+        var formattedEmail = HTMLemail.replace("%data%", this.contacts.email);
+        $("#topContacts").append(formattedEmail);
+        $("#footerContacts").append(formattedEmail);
+        var formattedMobile = HTMLmobile.replace("%data%", this.contacts.mobile);
+        $("#topContacts").append(formattedMobile);
+        $("#footerContacts").append(formattedMobile);
+        var formattedGithub = HTMLgithub.replace("%data%", this.contacts.github);
+        $("#topContacts").append(formattedGithub);
+        $("#footerContacts").append(formattedGithub);
+        var formattedLocation = HTMLlocation.replace("%data%", this.contacts.location);
+        $("#topContacts").append(formattedLocation);
+        $("#footerContacts").append(formattedLocation);
+
     }
 };
 
@@ -54,19 +57,25 @@ var education = {
         "name": "DeAnza College",
         "location": "Cupertino, CA",
         "degree": "Certificate in Networking",
-        "majors": "Computers",
+        "majors": [ "Computers", " Networking" ],
         "dates": "1996-1999",
         "url": "https://www.deanza.edu/"
     }, {
         "name": "S. D College",
         "location": "Ambala, India",
         "degree": "Bachelors of Science",
-        "majors": "Math",
+        "majors": ["Math", " Physics"],
         "dates": "1990-1993",
         "url": "http://www.sdcollegeambala.org/"
     }],
+    "onlineCourses" : [{
+        "title": "Front-End Web Developer Nanodegree",
+        "school": "Udacity",
+        "date": "Still continuing",
+        "url": "https://www.udacity.com/nanodegree"
+    }],
     "display": function() {
-        for (ed in this.schools) {
+        for (var ed = 0; ed < this.schools.length; ed++) {
             $("#education").append(HTMLschoolStart);
             var formattedSName = HTMLschoolName
                                 .replace("%data%", this.schools[ed].name)
@@ -76,32 +85,33 @@ var education = {
             $(".education-entry:last").append(formattedDegree);
             var formattedDate = HTMLschoolDates.replace("%data%", this.schools[ed].dates);
             $(".education-entry:last").append(formattedDate);
-            var formattedLocation = HTMLschoolLocation.replace("%data%", this.schools[ed].location);
+            var formattedLocation = HTMLschoolLocation.replace
+                                    ("%data%", this.schools[ed].location);
             $(".education-entry:last").append(formattedLocation);
-            var formattedMajor = HTMLschoolMajor.replace("%data%", this.schools[ed].majors);
+            var formattedMajor = HTMLschoolMajor.replace
+                                 ("%data%", this.schools[ed].majors);
             $(".education-entry:last").append(formattedMajor);
         }
+
+            for (var ol = 0; ol < this.onlineCourses.length; ol++) {
+                $("#education").append(HTMLonlineClasses);
+                $("#education").append(HTMLonlineEntry);
+                var formattedTitle = HTMLonlineTitle
+                                    .replace("%data%", this.onlineCourses[ol].title)
+                                    .replace("%url%", this.onlineCourses[ol].url);
+                $(".online-entry:last").append(formattedTitle);
+                var formattedSchool = HTMLonlineSchool.replace
+                                        ("%data%", this.onlineCourses[ol].school);
+                $(".online-entry:last").append(formattedSchool);
+                var formattedDate = HTMLonlineDates.replace
+                                    ("%data%", this.onlineCourses[ol].date);
+                $(".online-entry:last").append(formattedDate);
+            }
+
     }
 };
 
-var onlineCourses = {
-    "title": "Front-End Web Developer Nanodegree",
-    "school": "Udacity",
-    "date": "Still continuing",
-    "url": "https://www.udacity.com/nanodegree",
-    "display": function() {
-        $("#education").append(HTMLonlineClasses);
-        $("#education").append(HTMLonlineEntry);
-        var formattedTitle = HTMLonlineTitle
-                            .replace("%data%", onlineCourses.title)
-                            .replace("%url%", onlineCourses.url);
-        $(".online-entry:last").append(formattedTitle);
-        var formattedSchool = HTMLonlineSchool.replace("%data%", onlineCourses.school);
-        $(".online-entry:last").append(formattedSchool);
-        var formattedDate = HTMLonlineDates.replace("%data%", onlineCourses.date);
-        $(".online-entry:last").append(formattedDate);
-    }
-};
+
 
 
 var work = {
@@ -119,17 +129,18 @@ var work = {
         "description": "Working at School Cafetaria",
     }],
     "display": function() {
-        for (exp in this.jobs) {
+        for (var i = 0; i < this.jobs.length; i++) {
             $("#workExperience").append(HTMLworkStart);
-            var formattedEmployer = HTMLworkEmployer.replace("%data%", this.jobs[exp].employer);
-            var formattedTitle = HTMLworkTitle.replace("%data%", this.jobs[exp].title);
+            var formattedEmployer = HTMLworkEmployer.replace("%data%", this.jobs[i].employer);
+            var formattedTitle = HTMLworkTitle.replace("%data%", this.jobs[i].title);
             var formattedEmpTitle = formattedEmployer + formattedTitle;
             $(".work-entry:last").append(formattedEmpTitle);
-            var formattedLocation = HTMLworkLocation.replace("%data%", this.jobs[exp].location);
+            var formattedLocation = HTMLworkLocation.replace("%data%", this.jobs[i].location);
             $(".work-entry:last").append(formattedLocation);
-            var formattedDates = HTMLworkDates.replace("%data%", this.jobs[exp].dates);
+            var formattedDates = HTMLworkDates.replace("%data%", this.jobs[i].dates);
             $(".work-entry:last").append(formattedDates);
-            var formattedDescription = HTMLworkDescription.replace("%data%", this.jobs[exp].description);
+            var formattedDescription = HTMLworkDescription.replace
+                                        ("%data%", this.jobs[i].description);
             $(".work-entry:last").append(formattedDescription);
         }
     }
@@ -148,36 +159,22 @@ var projects = {
         "images": [ ]
     }],
     "display": function() {
-        for (proj in this.project) {
+        for (var proj = 0; proj < this.project.length; proj++) {
             $("#projects").append(HTMLprojectStart);
             var formattedTitle = HTMLprojectTitle.replace("%data%", this.project[proj].title);
             $(".project-entry:last").append(formattedTitle);
             var formattedDates = HTMLprojectDates.replace("%data%", this.project[proj].dates);
             $(".project-entry:last").append(formattedDates);
-            var formattedDescription = HTMLprojectDescription.replace("%data%", this.project[proj].description);
+            var formattedDescription = HTMLprojectDescription.replace
+                                        ("%data%", this.project[proj].description);
             $(".project-entry:last").append(formattedDescription);
             $(".project-entry:last").append(HTMLprojectImageStart);
             for (img in this.project[proj].images) {
-                var formattedImage = HTMLprojectImage.replace("%data%", this.project[proj].images[img]);
+                var formattedImage = HTMLprojectImage.replace
+                                    ("%data%", this.project[proj].images[img]);
                 $(".proj-img:last").append(formattedImage);
             }
         }
-    }
-};
-var contacts = {
-    "mobile": "303-513-5592",
-    "email": "nidhi_varma@hotmail.com",
-    "github": "nidhi-varma",
-    "location": "Denver, CO",
-    "display": function() {
-        var formattedEmail = HTMLemail.replace("%data%", this.email);
-        $("#footerContacts").append(formattedEmail);
-        var formattedMobile = HTMLmobile.replace("%data%", this.mobile);
-        $("#footerContacts").append(formattedMobile);
-        var formattedGithub = HTMLgithub.replace("%data%", this.github);
-        $("#footerContacts").append(formattedGithub);
-        var formattedLocation = HTMLlocation.replace("%data%", this.location);
-        $("#footerContacts").append(formattedLocation);
     }
 };
 
@@ -186,12 +183,3 @@ work.display();
 $("#mapDiv").append(googleMap);
 projects.display();
 education.display();
-onlineCourses.display();
-contacts.display();
-
-function inName(aName) {
-    var modifiedName = aName.split(" ");
-    modifiedName = modifiedName[0].charAt(0).toUpperCase() +
-        modifiedName[0].slice(1).toLowerCase() + " " + modifiedName[1].toUpperCase();
-    return modifiedName;
-}
